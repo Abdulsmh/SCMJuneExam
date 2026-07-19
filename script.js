@@ -1,0 +1,1 @@
+console.log("SCM June Exam project loaded successfully!");
