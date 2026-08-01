@@ -1,21 +1,139 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     background-color: #f4f4f9;
     color: #333;
-    text-align: center;
 }
+
 header {
     background: #007acc;
     color: white;
     padding: 20px;
     border-radius: 8px;
+    text-align: center;
 }
-main {
-    margin-top: 20px;
-    padding: 20px;
+
+.tabs {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.tab-btn.active {
     background: white;
+    color: #007acc;
+    font-weight: bold;
+}
+
+main {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.tab-panel {
+    display: none;
+    background: white;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+form input, form select {
+    flex: 1;
+    min-width: 120px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    padding: 8px 16px;
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #005f99;
+}
+
+.item-list {
+    list-style: none;
+    padding: 0;
+}
+
+.item-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.item-list li:last-child {
+    border-bottom: none;
+}
+
+.item-actions button {
+    margin-left: 6px;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.priority-high {
+    border-left: 4px solid #e74c3c;
+    padding-left: 8px;
+}
+
+.priority-medium {
+    border-left: 4px solid #f39c12;
+    padding-left: 8px;
+}
+
+.priority-low {
+    border-left: 4px solid #2ecc71;
+    padding-left: 8px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #888;
+    font-size: 14px;
 }
