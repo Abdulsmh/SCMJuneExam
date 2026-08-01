@@ -3,18 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCM June Exam Project</title>
+    <title>Contact & Task Manager</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>SCM June Exam - Collaboration Project</h1>
-        <p>Team Repository</p>
+        <h1>Contact & Task Manager</h1>
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="contacts">Contacts</button>
+            <button class="tab-btn" data-tab="tasks">Tasks</button>
+        </nav>
     </header>
+
     <main>
-        <p>Project initialized successfully. Team members can now pull the main branch and create feature branches.</p>
+        <section id="contacts" class="tab-panel active">
+            <h2>Contacts</h2>
+            <form id="contact-form">
+                <input type="text" id="contact-name" placeholder="Name" required>
+                <input type="email" id="contact-email" placeholder="Email" required>
+                <input type="tel" id="contact-phone" placeholder="Phone">
+                <button type="submit">Add Contact</button>
+            </form>
+            <ul id="contact-list" class="item-list"></ul>
+        </section>
+
+        <section id="tasks" class="tab-panel">
+            <h2>Tasks</h2>
+            <form id="task-form">
+                <input type="text" id="task-title" placeholder="Task title" required>
+                <select id="task-priority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <button type="submit">Add Task</button>
+            </form>
+            <ul id="task-list" class="item-list"></ul>
+        </section>
     </main>
-    <script src="index.js"></script>
+
+    <footer>
+        <p>SCM June Exam Project</p>
+    </footer>
+
+    <script src="contacts.js"></script>
+    <script src="tasks.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
