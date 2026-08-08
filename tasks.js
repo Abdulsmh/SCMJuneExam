@@ -11,10 +11,15 @@ function saveTasks(tasks) {
     localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
 }
 
-function renderTasks() {
+function renderTasks(filterText) {
     const list = document.getElementById("task-list");
     list.innerHTML = "";
-    const tasks = getTasks();
+    let tasks = getTasks();
+
+    if (filterText) {
+        const term = filterText.toLowerCase();
+        tasks = tasks.filter((t) => t.title.toLowerCase().includes(term));
+    }
 
     tasks.forEach((task) => {
         const li = document.createElement("li");
@@ -64,13 +69,15 @@ function toggleTask(id) {
         t.id === id ? { ...t, completed: !t.completed } : t
     );
     saveTasks(tasks);
-    renderTasks();
+    const searchInput = document.getElementById("task-search");
+    renderTasks(searchInput ? searchInput.value.trim() : "");
 }
 
 function deleteTask(id) {
     const tasks = getTasks().filter((t) => t.id !== id);
     saveTasks(tasks);
-    renderTasks();
+    const searchInput = document.getElementById("task-search");
+    renderTasks(searchInput ? searchInput.value.trim() : "");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -87,6 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
         addTask(title, priority);
         form.reset();
     });
+
+    const searchInput = document.getElementById("task-search");
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            renderTasks(searchInput.value.trim());
+        });
+    }
 
     renderTasks();
 });
