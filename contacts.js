@@ -11,10 +11,17 @@ function saveContacts(contacts) {
     localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
 }
 
-function renderContacts() {
+function renderContacts(filterText) {
     const list = document.getElementById("contact-list");
     list.innerHTML = "";
-    const contacts = getContacts();
+    let contacts = getContacts();
+
+    if (filterText) {
+        const term = filterText.toLowerCase();
+        contacts = contacts.filter(
+            (c) => c.name.toLowerCase().includes(term) || c.email.toLowerCase().includes(term)
+        );
+    }
 
     contacts.forEach((contact) => {
         const li = document.createElement("li");
@@ -52,7 +59,8 @@ function addContact(name, email, phone) {
 function deleteContact(id) {
     const contacts = getContacts().filter((c) => c.id !== id);
     saveContacts(contacts);
-    renderContacts();
+    const searchInput = document.getElementById("contact-search");
+    renderContacts(searchInput ? searchInput.value.trim() : "");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -70,6 +78,13 @@ document.addEventListener("DOMContentLoaded", () => {
         addContact(name, email, phone);
         form.reset();
     });
+
+    const searchInput = document.getElementById("contact-search");
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            renderContacts(searchInput.value.trim());
+        });
+    }
 
     renderContacts();
 });
