@@ -117,6 +117,19 @@ form button:hover {
     border-bottom: none;
 }
 
+.edit-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+}
+
+.edit-row input, .edit-row select {
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 .item-actions button {
     margin-left: 6px;
     padding: 4px 10px;
