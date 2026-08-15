@@ -19,6 +19,10 @@
         <section id="contacts" class="tab-panel active">
             <h2>Contacts</h2>
             <input type="text" id="contact-search" class="search-box" placeholder="Search contacts by name or email...">
+            <select id="contact-sort" class="sort-select">
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+            </select>
             <form id="contact-form">
                 <input type="text" id="contact-name" placeholder="Name" required>
                 <input type="email" id="contact-email" placeholder="Email" required>
@@ -31,6 +35,11 @@
         <section id="tasks" class="tab-panel">
             <h2>Tasks</h2>
             <input type="text" id="task-search" class="search-box" placeholder="Search tasks by title...">
+            <select id="task-sort" class="sort-select">
+                <option value="priority-desc">Priority (High-Low)</option>
+                <option value="priority-asc">Priority (Low-High)</option>
+                <option value="title-asc">Title (A-Z)</option>
+            </select>
             <form id="task-form">
                 <input type="text" id="task-title" placeholder="Task title" required>
                 <select id="task-priority">
