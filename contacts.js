@@ -2,6 +2,7 @@
 
 const CONTACTS_KEY = "scm_contacts";
 let editingContactId = null;
+let contactSortOrder = "name-asc";
 
 function getContacts() {
     const raw = localStorage.getItem(CONTACTS_KEY);
@@ -10,6 +11,13 @@ function getContacts() {
 
 function saveContacts(contacts) {
     localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
+}
+
+function sortContacts(contacts) {
+    const sorted = [...contacts];
+    sorted.sort((a, b) => a.name.localeCompare(b.name));
+    if (contactSortOrder === "name-desc") sorted.reverse();
+    return sorted;
 }
 
 function renderContacts(filterText) {
@@ -23,6 +31,8 @@ function renderContacts(filterText) {
             (c) => c.name.toLowerCase().includes(term) || c.email.toLowerCase().includes(term)
         );
     }
+
+    contacts = sortContacts(contacts);
 
     contacts.forEach((contact) => {
         const li = document.createElement("li");
@@ -148,6 +158,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchInput) {
         searchInput.addEventListener("input", () => {
             renderContacts(searchInput.value.trim());
+        });
+    }
+
+    const sortSelect = document.getElementById("contact-sort");
+    if (sortSelect) {
+        sortSelect.addEventListener("change", () => {
+            contactSortOrder = sortSelect.value;
+            renderContacts(searchInput ? searchInput.value.trim() : "");
         });
     }
 

@@ -2,6 +2,8 @@
 
 const TASKS_KEY = "scm_tasks";
 let editingTaskId = null;
+let taskSortOrder = "priority-desc";
+const PRIORITY_RANK = { low: 1, medium: 2, high: 3 };
 
 function getTasks() {
     const raw = localStorage.getItem(TASKS_KEY);
@@ -10,6 +12,17 @@ function getTasks() {
 
 function saveTasks(tasks) {
     localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+}
+
+function sortTasks(tasks) {
+    const sorted = [...tasks];
+    if (taskSortOrder === "title-asc") {
+        sorted.sort((a, b) => a.title.localeCompare(b.title));
+    } else {
+        sorted.sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]);
+        if (taskSortOrder === "priority-desc") sorted.reverse();
+    }
+    return sorted;
 }
 
 function renderTasks(filterText) {
@@ -21,6 +34,8 @@ function renderTasks(filterText) {
         const term = filterText.toLowerCase();
         tasks = tasks.filter((t) => t.title.toLowerCase().includes(term));
     }
+
+    tasks = sortTasks(tasks);
 
     tasks.forEach((task) => {
         const li = document.createElement("li");
@@ -162,6 +177,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchInput) {
         searchInput.addEventListener("input", () => {
             renderTasks(searchInput.value.trim());
+        });
+    }
+
+    const sortSelect = document.getElementById("task-sort");
+    if (sortSelect) {
+        sortSelect.addEventListener("change", () => {
+            taskSortOrder = sortSelect.value;
+            renderTasks(searchInput ? searchInput.value.trim() : "");
         });
     }
 
