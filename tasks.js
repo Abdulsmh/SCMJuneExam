@@ -1,6 +1,7 @@
-// Tasks module: add, render, complete, delete, persisted in localStorage
+// Tasks module: add, render, edit, complete, delete, persisted in localStorage
 
 const TASKS_KEY = "scm_tasks";
+let editingTaskId = null;
 
 function getTasks() {
     const raw = localStorage.getItem(TASKS_KEY);
@@ -25,6 +26,12 @@ function renderTasks(filterText) {
         const li = document.createElement("li");
         li.className = `priority-${task.priority}`;
 
+        if (editingTaskId === task.id) {
+            li.appendChild(buildTaskEditRow(task));
+            list.appendChild(li);
+            return;
+        }
+
         const info = document.createElement("span");
         info.textContent = task.title;
         if (task.completed) {
@@ -35,6 +42,13 @@ function renderTasks(filterText) {
         const actions = document.createElement("span");
         actions.className = "item-actions";
 
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => {
+            editingTaskId = task.id;
+            renderTasks(filterText);
+        });
+
         const completeBtn = document.createElement("button");
         completeBtn.textContent = task.completed ? "Undo" : "Done";
         completeBtn.addEventListener("click", () => toggleTask(task.id));
@@ -44,12 +58,52 @@ function renderTasks(filterText) {
         deleteBtn.className = "delete-btn";
         deleteBtn.addEventListener("click", () => deleteTask(task.id));
 
+        actions.appendChild(editBtn);
         actions.appendChild(completeBtn);
         actions.appendChild(deleteBtn);
         li.appendChild(info);
         li.appendChild(actions);
         list.appendChild(li);
     });
+}
+
+function buildTaskEditRow(task) {
+    const wrapper = document.createElement("span");
+    wrapper.className = "edit-row";
+
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.value = task.title;
+
+    const prioritySelect = document.createElement("select");
+    ["low", "medium", "high"].forEach((level) => {
+        const opt = document.createElement("option");
+        opt.value = level;
+        opt.textContent = level.charAt(0).toUpperCase() + level.slice(1);
+        if (level === task.priority) opt.selected = true;
+        prioritySelect.appendChild(opt);
+    });
+
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "Save";
+    saveBtn.addEventListener("click", () => {
+        const title = titleInput.value.trim();
+        if (!title) return;
+        updateTask(task.id, title, prioritySelect.value);
+    });
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.addEventListener("click", () => {
+        editingTaskId = null;
+        renderTasks();
+    });
+
+    wrapper.appendChild(titleInput);
+    wrapper.appendChild(prioritySelect);
+    wrapper.appendChild(saveBtn);
+    wrapper.appendChild(cancelBtn);
+    return wrapper;
 }
 
 function addTask(title, priority) {
@@ -61,6 +115,15 @@ function addTask(title, priority) {
         completed: false
     });
     saveTasks(tasks);
+    renderTasks();
+}
+
+function updateTask(id, title, priority) {
+    const tasks = getTasks().map((t) =>
+        t.id === id ? { ...t, title, priority } : t
+    );
+    saveTasks(tasks);
+    editingTaskId = null;
     renderTasks();
 }
 
